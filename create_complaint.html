@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Complaint</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+form button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    background: #28a745;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background: #218838;
+}
+
+.notification {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: none;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create Complaint</h2>
+
+    <div class="notification" id="notification"></div>
+
+    <form id="complaintForm">
+        <input type="text" id="studentName" placeholder="Your Name" readonly>
+        <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Classroom">Classroom</option>
+            <option value="Lab">Lab</option>
+            <option value="Others">Others</option>
+        </select>
+        <textarea id="description" placeholder="Describe your complaint" rows="4" required></textarea>
+        <input type="text" id="location" placeholder="Location / Block" required>
+        <input type="file" id="photo">
+        <button ty"submit">Submit</button>
+        <button class="Exit" onclick="logout()">Exit</button>
+    </form>
+</div>
+
+<script>
+// Get student info
+let student = JSON.parse(localStorage.getItem('student') || 'null');
+let complaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+const studentName = document.getElementById('studentName');
+const notification = document.getElementById('notification');
+
+if(!student){
+    alert("Please login first!");
+    window.location.href = "student_login.html";
+} else {
+    studentName.value = student.name; // Show actual student name
+}
+
+// Show notification
+function showNotification(msg){
+    notification.textContent = msg;
+    notification.style.display = 'block';
+    setTimeout(()=> notification.style.display='none', 3000);
+}
+
+// Submit complaint
+document.getElementById('complaintForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    const category = document.getElementById('category').value;
+    const description = document.getElementById('description').value;
+    const location = document.getElementById('location').value;
+    const file = document.getElementById('photo').files[0];
+    const reader =new FileReader();
+    reader.onload = function(){
+    const newComplaint = {
+        id: Date.now(),
+        studentRoll: student.rollNo,
+        name: student.name, // real name from login
+        category,
+        description,
+        location,
+        status: 'Pending',
+        photo: file ? reader.result:null,
+        rating: 0
+    };
+
+    complaints.push(newComplaint);
+    localStorage.setItem('complaints', JSON.stringify(complaints));
+
+    showNotification("Complaint submitted successfully!");
+
+    document.getElementById('complaintForm').reset();
+    studentName.value = student.name; // keep name
+};
+if(file){
+    reader.readAsDataURL(file);
+
+}else{
+    reader.onload();
+}
+});
+function logout(){
+    localStorage.removeItem("student");
+    window.location.href="login.html";
+}
+</script>
+</body>
+</html>

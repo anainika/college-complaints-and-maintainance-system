@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Status</title>
+<style>
+body{font-family:Arial;background:#f4f6f9;margin:0}
+header{background:#007bff;color:white;padding:15px}
+.container{padding:20px}
+.card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.pending{color:orange;font-weight:bold}
+.progress{color:blue;font-weight:bold}
+.resolved{color:green;font-weight:bold}
+img{max-width:120px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+    <h2>My Complaint Status</h2>
+</header>
+
+<div class="container" id="list"></div>
+
+<script>
+let student = JSON.parse(localStorage.getItem("student"));
+let complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+
+const list = document.getElementById("list");
+
+if(!student){
+    list.innerHTML = "<p>Please login first.</p>";
+} else if(complaints.length === 0){
+    list.innerHTML = "<p>No complaints in system.</p>";
+} else {
+
+    // Show ALL complaints of this roll number
+    let found = false;
+
+    complaints.forEach(c=>{
+        if(String(c.studentRoll) === String(student.rollNo)){
+            found = true;
+
+            let statusClass = 
+                c.status === "Resolved" ? "resolved" :
+                c.status === "In Progress" ? "progress" : "pending";
+
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `
+                <p><b>Category:</b> ${c.category}</p>
+                <p><b>Location:</b> ${c.location}</p>
+                <p><b>Description:</b> ${c.description}</p>
+                <p class="${statusClass}">Status: ${c.status}</p>
+                <p><b>Staff:</b> ${c.staff || "Not assigned"}</p>
+                <p><b>Remark:</b> ${c.remark || "No remarks yet"}</p>
+                ${c.photo ? `<img src="${c.photo}">` : ""}
+            `;
+            list.appendChild(div);
+        }
+    });
+
+    if(!found){
+        list.innerHTML = "<p>No complaints found for your Roll Number.</p>";
+    }
+}
+</script>
+
+</body>
+</html>

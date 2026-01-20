@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Complaint System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-container">
+    <h2>College Complaint System</h2>
+    <p>Login as:</p>
+    <button onclick="login('student')">Student</button>
+    <button onclick="login('admin')">Admin</button>
+</div>
+
+<script>
+function login(role) {
+    localStorage.setItem('role', role);
+    if(role === 'student'){
+        window.location.href = 'student.html';
+    } else {
+        window.location.href = 'admin_login.html';
+    }
+}
+
+
+</script>
+</body>
+</html>

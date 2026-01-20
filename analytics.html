@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analytics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>Complaint Analytics</h2>
+    <span class="link" onclick="goBack()">Back</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>Total Complaints</h3>
+      <h1 id="total">0</h1>
+    </div>
+
+    <div class="card">
+      <h3>Pending</h3>
+      <h1 id="pending">0</h1>
+    </div>
+
+    <div class="card">
+      <h3>In Progress</h3>
+      <h1 id="progress">0</h1>
+    </div>
+
+    <div class="card">
+      <h3>Resolved</h3>
+      <h1 id="resolved">0</h1>
+    </div>
+  </div>
+
+  <script>
+    const role = localStorage.getItem("currentRole");
+    if (!role || role !== "admin") {
+      window.location.href = "login.html";
+    }
+
+    const complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+
+    let pending = 0, progress = 0, resolved = 0;
+
+    complaints.forEach(c => {
+      if (c.status === "Pending") pending++;
+      else if (c.status === "In Progress") progress++;
+      else if (c.status === "Resolved") resolved++;
+    });
+
+    document.getElementById("total").innerText = complaints.length;
+    document.getElementById("pending").innerText = pending;
+    document.getElementById("progress").innerText = progress;
+    document.getElementById("resolved").innerText = resolved;
+
+    function goBack() {
+      window.location.href = "admin.html";
+    }
+  </script>
+
+</body>
+</html>

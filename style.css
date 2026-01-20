@@ -1,0 +1,84 @@
+/* Reset default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body and background */
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("https://images.shiksha.com/mediadata/images/1491988218phptj6hID.jpeg");
+    background-size:cover;
+}
+/* Login card */
+.login-container {
+    background-color: rgb(243, 229, 229);
+    padding: 50px 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 350px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+}
+
+p {
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* Buttons */
+button {
+    width: 150px;
+    padding: 12px 0;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgb(13, 13, 13);
+    
+}
+
+button:nth-child { /* Student button */
+    background: #0855ae;
+}
+
+button:nth-child(3) { /* Admin button */
+    background: #0e40e3;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media(max-width: 400px){
+    .login-container {
+        width: 90%;
+        padding: 40px 20px;
+    }
+
+    button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

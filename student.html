@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login / Register</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #28a745;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #218838;
+}
+
+.notification {
+    display: none;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    color: white;
+}
+.notification.success { background: #28a745; }
+.notification.error { background: #dc3545; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Student Login / Register</h2>
+
+    <div id="notification" class="notification"></div>
+
+    <form id="loginForm">
+        <input type="text" id="rollNo" placeholder="Roll Number" required>
+        <input type="text" id="studentName" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">Login / Register</button>
+    </form>
+</div>
+
+<script>
+// Notification helper
+const notification = document.getElementById('notification');
+function showNotification(msg, type='success'){
+    notification.textContent = msg;
+    notification.className = 'notification ' + type;
+    notification.style.display = 'block';
+    setTimeout(()=> notification.style.display='none', 3000);
+}
+
+// Handle login/register
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    const rollNo = document.getElementById('rollNo').value.trim();
+    const name = document.getElementById('studentName').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if(!rollNo || !name || !email){
+        showNotification("Please enter all fields", "error");
+        return;
+    }
+
+    // Save student info in localStorage
+    const student = { rollNo, name, email };
+    localStorage.setItem('student', JSON.stringify(student));
+
+    showNotification("Logged in successfully!", "success");
+
+    // Redirect to Create Complaint page
+    setTimeout(()=>{
+        window.location.href = 'create_complaint.html';
+    }, 1000);
+});
+</script>
+
+</body>
+</html>
